@@ -8,9 +8,15 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import path from 'path';
 import { fileURLToPath } from 'url'; 
-// import authRouters from './Routes/auth.js'
+import authRouters from './Routes/auth.route.js'
+import userRouters from './Routes/users.route.js'
+import postRouters from './Routes/posts.route.js'
 import { register } from './controllers/auth.controller.js';
-
+import {createPost} from './controllers/posts.controller.js'
+import { verifyToken } from './middleware/auth.middleware.js';
+import User from './models/User.js';
+import Post from './models/Post.js';
+import {users,posts} from "./data/index.js"
 
 
 // CONFIGURATIONS
@@ -30,7 +36,7 @@ app.use('/assets', express.static(path.join(__dirname,'public/assets')))
 
 const storage=multer.diskStorage({
     destination: function(req,file,cb){
-        cb(null,'public/assests')
+        cb(null,"public/assests")
     },
     filename: function(req,file,cb){
         cb(null,file.originalname);
@@ -39,9 +45,16 @@ const storage=multer.diskStorage({
 
 const upload =multer({storage});
 
-app.post('/auth/register',upload.single('picture'),register)
+// ROUTER WITH FILES 
 
-// app.use('/auth',authRouters)
+app.post('/auth/register',upload.single('picture'),register);
+app.post("/posts",verifyToken, upload.single('picture'),createPost);
+
+// ROUTES
+
+app.use('/auth',authRouters)
+app.use('/users',userRouters)
+app.post("/posts",postRouters)
 
 // mongoose settings 
 
@@ -53,4 +66,7 @@ mongoose.connect(process.env.MONGO_URL,
     }
 ).then (()=>{
     app.listen(PORT,()=> console.log(`server port listening on : ${PORT}`))
+
+    // User.insertMany(users);
+    // Post.insertMany(posts);
 }).catch((error)=> console.log(`${error} did not connect`))
