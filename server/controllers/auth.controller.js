@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import User from "../models/User.js"
 
 export const register =async (req, res) =>{
@@ -9,19 +9,21 @@ export const register =async (req, res) =>{
             lastName,
             email,
             password,
+            picturePath,
             friends,
             location,
-            occupation
+            occupation,
         }=req.body;
 
-        const salt=await bcrybt.genSalt();
-        const passwordHash=await bcrybt.hash(password, salt);
+        const salt= await bcrypt.genSalt();
+        const passwordHash=await bcrypt.hash(password, salt);
 
         const newUser =new User({
             firstName,
             lastName,
             email,
             password:passwordHash,
+            picturePath,
             friends,
             location,
             occupation,
@@ -29,7 +31,7 @@ export const register =async (req, res) =>{
             impressions: Math.floor(Math.random()*10000)
         })
         const savedUser=await newUser.save();
-        res.status(201).json({status: 'success',data :{ user : savedUser}})
+        res.status(201).json(savedUser);
     }catch(err){
         res.status(500).json({status: 'error',error: {message :err.message}})
     }
@@ -50,7 +52,7 @@ export const login =async (req, res) => {
 
         const token =jwt.sign({id:user._id},process.env.JWT_SECRET_KEY)
         delete user.password
-        res.status(200).json({status :"succuess", data:{token :token,user:user}})
+        res.status(200).json({ token, user });
 
     }catch(err){
         res.status(500).json({status: 'error',error: {message :err.message}})

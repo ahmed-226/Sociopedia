@@ -15,7 +15,6 @@ import {useDispatch} from "react-redux"
 import {setLogin} from "../../state/index.js"
 import  Dropzone from "react-dropzone"
 import FlexBetween from "../../components/FlexBetween.jsx"
-import EditOutlined from '@mui/icons-material/EditOutlined'
 
 const registerSchema =yup.object().shape({
     firstName:  yup.string().required('required'),
@@ -52,11 +51,58 @@ const Form =()=>{
     const {palette} =useTheme()
     const dispatch=useDispatch()
     const navigate=useNavigate()
-    const inoMobile =useMediaQuery("(min-width: 600px")
-    const isLogin =pageType === 'login'
+    const isNonMobile = useMediaQuery("(min-width:600px)");
+    const isLogin = pageType === 'login'
     const isRegister =pageType==='register'
 
-    const handleFormSubmit=async (values,onSubmitProps) =>{}
+    const register = async (values, onSubmitProps) => {
+    // this allows us to send form info with image
+        const formData = new FormData();
+        for (let value in values) {
+            formData.append(value, values[value]);
+        }
+        formData.append("picturePath", values.picture.name);
+
+        const savedUserResponse = await fetch(
+            "http://localhost:3001/auth/register",
+            {
+                method: "POST",
+                body: formData,
+            }
+        );
+        const savedUser = await savedUserResponse.json();
+        onSubmitProps.resetForm();
+
+        if (savedUser) {
+            setPageType("login");
+        }
+    };
+    
+    const login = async (values, onSubmitProps) => {
+    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(values),
+    });
+    const loggedIn = await loggedInResponse.json();
+    onSubmitProps.resetForm();
+    if (loggedIn) {
+        dispatch(
+            setLogin({
+                user: loggedIn.user,
+                token: loggedIn.token,
+            })
+        );
+        navigate("/home");
+        }
+    };
+    
+    const handleFormSubmit=async (values,onSubmitProps) =>{
+        if (isLogin) await login(values, onSubmitProps);
+        if (isRegister) await register(values, onSubmitProps);
+    }
+
+
 
     return  (
         <Formik 
@@ -80,7 +126,7 @@ const Form =()=>{
                         gap={"30px"}
                         gridTemplateColumns={"repeat(4,minmax(0,1fr))"}
                         sx={{
-                            "& > div" : {gridColumn : inoMobile ? undefined :"span 4"}
+                            "& > div" : {gridColumn : isNonMobile ? undefined :"span 4"}
 
                         }}
                         >
@@ -148,7 +194,7 @@ const Form =()=>{
                                             {({ getRootProps,getInputProps})=>(
                                                 <Box
                                                     {...getRootProps()}
-                                                    border={`2xp dashed ${palette.primary.main}`}
+                                                    border={`2px dashed ${palette.primary.main}`}
                                                     p={"1rem"}
                                                     sx={{ "&:hover":{cursor :"pointer" }}}
                                                 >
@@ -159,7 +205,7 @@ const Form =()=>{
                                                             <Typography>
                                                                 {values.picture.name}
                                                             </Typography>
-                                                            <EditOutlined/>
+                                                            <EditOutlinedIcon/>
                                                         </FlexBetween>)}
                                                 </Box>
                                             )}
@@ -220,14 +266,14 @@ const Form =()=>{
                             sx={{
                                 textDecoration :'underline',
                                 color :palette.primary.main,
-                                "&hover": {
-                                    cursor : "pointer",
+                                "&:hover": {
+                                    cursor : 'pointer',
                                     color :palette.primary.light
                                 }
                             }}
                         >
                             {isLogin 
-                            ? " Don't haev an account ? Sign up here.":
+                            ? " Don't have an account? Sign up here.":
                             "Already have an account? login here."
                             }
                         </Typography>
