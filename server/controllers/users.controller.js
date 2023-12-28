@@ -8,11 +8,11 @@ export const getUser=async (req,res) => {
         const {id}=await req.params;
         const user=await User.findById(id);
 
-        res.status(200).json({user});
+        res.status(200).json(user);
 
     }catch(e) {
 
-        res.status(404).json({status: " ERRROR", message: e.message});
+        res.status(404).json({status: " ERROR", message: e.message});
 
     }
 
@@ -22,18 +22,18 @@ export const getUserFriend =async (req,res) => {
 
     try {
 
-        const {id}=await req.params;
+        const {id}= req.params;
         const user=await User.findById(id);
 
         const friends=await Promise.all(
             user.friends.map((id)=> User.findById(id))
         )
         const formattedFreinds=friends.map(
-            ({id,firstName,lastName,occupation,location,picturePath})=>{
-                return {id,firstName,lastName,occupation,location,picturePath};
+            ({_id,firstName,lastName,occupation,location,picturePath})=>{
+                return {_id,firstName,lastName,occupation,location,picturePath};
             }
         )
-        res.status(200).json({status :"SUCCESS",data :formattedFreinds});
+        res.status(200).json(formattedFreinds);
 
     }catch(e) {
 
@@ -53,7 +53,7 @@ export const addRemoveFriend =async (req,res)=>{
 
         if(user.friends.includes(friendId)){
             user.friends=user.friends.filter((id)=> id!== friendId);
-            friend.friends=firend.friends.filter((id)=> id!== id);
+            friend.friends=friend.friends.filter((id)=> id!== id);
         }else{
             user.friends.push(friendId);
             friend.friends.push(id);
@@ -67,11 +67,11 @@ export const addRemoveFriend =async (req,res)=>{
         )
         const formattedFreinds=friends.map(
             ({id,firstName,lastName,occupation,location,picturePath})=>{
-                return {id,firstName,lastName,occupation,location,picturePath};
+                return {_id,firstName,lastName,occupation,location,picturePath};
             }
         )
 
-        res.staus(404).json({status:"SUCCESS",data : {friends:formattedFreinds}});
+        res.staus(200).json({status:"SUCCESS",data : {friends:formattedFreinds}});
 
     }catch(e){
 

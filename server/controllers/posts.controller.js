@@ -21,10 +21,8 @@ export const createPost =async (req,res)=>{
         })
 
         await newPost.save();
-
         const post=await Post.find()
-        
-        res.status(201).json({status: 'Success',data: post})
+        res.status(201).json(post)
 
     }catch(e){
         res.status(409).json({status:"ERROR",message :e.message});
@@ -53,7 +51,7 @@ export const getUserPosts =async (req,res)=>{
 
         const {userId} =req.params;
         const post =await Post.find({userId});
-        res.status(404).json(post);
+        res.status(200).json(post);
         
     } catch (err) {
         

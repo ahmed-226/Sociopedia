@@ -51,19 +51,19 @@ const UserWidget = ({ userId, PicturePath }) => {
     return (
         <WidgetWrapper>
             <FlexBetween
-                gap={"0.5rem"}
-                pb={"1.1rem"}
+                gap="0.5rem"
+                pb="1.1rem"
                 onClick={() => navigate(`/profile/${userId}`)}
             >
-                <FlexBetween gap={"1rem"}>
-                    <UserImage image={PicturePath}>
+                <FlexBetween gap="1rem">
+                    <UserImage image={PicturePath}/>
                         <Box>
                             <Typography
                                 variant="h4"
                                 color={dark}
-                                fontWeight={"500"}
+                                fontWeight="500"
                                 sx={{
-                                    $hover: {
+                                    "&:hover": {
                                         color: palette.primary.light,
                                         cursor: "pointer",
                                     },
@@ -71,9 +71,8 @@ const UserWidget = ({ userId, PicturePath }) => {
                             >
                                 {firstName} {lastName}
                             </Typography>
-                            <Typography color={medium}>{friends.lenght} friends</Typography>
+                            <Typography color={medium}>{friends.lenght || 0} friends</Typography>
                         </Box>
-                    </UserImage>
                 </FlexBetween>
                 <ManageAccountsOutlined />
             </FlexBetween>
@@ -119,7 +118,7 @@ const UserWidget = ({ userId, PicturePath }) => {
                 </Typography>
 
                 <FlexBetween gap="1rem" mb="0.5rem">
-                    <FlexBetween ap="1rem">
+                    <FlexBetween gap="1rem">
                         <img src="../assets/twitter.png" alt="twitter" />
                         <Box>
                             <Typography color={main} fontWeight={"500"}>
