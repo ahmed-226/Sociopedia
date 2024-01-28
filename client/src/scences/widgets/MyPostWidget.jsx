@@ -40,13 +40,13 @@ const MyPostWidget = ({picturePath}) => {
     const handelPost=async()=>{
         const formData=new FormData()
         formData.append("userId",_id)
-        formData.append("discription",post)
+        formData.append("description",post)
         if(image){
             formData.append("picture",image)
-            formData.append("pictureName",image.name)
+            formData.append("picturePath",image.name)
         }
 
-        const response=await fetch("http://localhost:3001/posts",
+        const response=await fetch(`http://localhost:3001/posts`,
         {
             method :"POST",
             headers :{ Authorization: `Bearer ${token}`},

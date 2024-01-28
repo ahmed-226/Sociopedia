@@ -54,7 +54,7 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 app.use('/auth',authRouters)
 app.use('/users',userRouters)
-app.post("/posts",postRouters)
+app.use("/posts",postRouters)
 
 // mongoose settings 
 
