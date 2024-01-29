@@ -8,12 +8,12 @@ const router=express.Router();
 
 // READ
 
-router.get("/:id",getUser);
-router.get("/:id/friends",getUserFriend);
+router.get("/:id",verifyToken,getUser);
+router.get("/:id/friends",verifyToken,getUserFriend);
 
 // UPDATE
 
-router.patch("/:id/:friendId",addRemoveFriend);
+router.patch("/:id/:friendId",verifyToken,addRemoveFriend);
 
 
 export default router;

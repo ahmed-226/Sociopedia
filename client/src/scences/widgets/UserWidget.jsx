@@ -33,11 +33,12 @@ const UserWidget = ({ userId, PicturePath }) => {
     useEffect(() => {
         getUser();
     }, []);
+    
 
     if (!user) {
         return null
     }
-
+    
     const {
         firstName,
         lastName,
@@ -47,7 +48,7 @@ const UserWidget = ({ userId, PicturePath }) => {
         impressions,
         friends,
     } = user;
-
+    
     return (
         <WidgetWrapper>
             <FlexBetween
