@@ -7,7 +7,7 @@ import FriendsListWidget from '../widgets/FriendsListWidget'
 import MyPostWidget from '../widgets/MyPostWidget'
 import PostsWidget from '../widgets/PostsWidget'
 import UserWidget from '../widgets/UserWidget'
-
+import allowOrigins from '../../allowOrigins'
 
 const ProfilePage = () => {
 
@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
   const getUser=async ()=> {
 
-    const resopnse=await fetch(`http://localhost:3001/users/${userId}`,
+    const resopnse=await fetch(`${allowOrigins.local}/users/${userId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

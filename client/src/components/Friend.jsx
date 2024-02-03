@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "../state/index.js";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import allowOrigins from "../allowOrigins.js";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 	const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
 	const patchFriend = async () => {
 		const response = await fetch(
-			`http://localhost:3001/users/${_id}/${friendId}`,
+			`${allowOrigins.local}/users/${_id}/${friendId}`,
 			{
 				method: "PATCH",
 				headers: {
