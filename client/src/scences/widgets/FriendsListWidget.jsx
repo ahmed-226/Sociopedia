@@ -15,7 +15,7 @@ const FriendsListWidget = ({ userId }) => {
 
   const getFriends = async () => {
     const response = await fetch(
-      `${allowOrigins.netlify}/users/${userId}/friends`,
+      `${allowOrigins.render}/users/${userId}/friends`,
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` }

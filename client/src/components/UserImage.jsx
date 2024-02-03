@@ -11,7 +11,7 @@ const UserImage = ({ image, size = "60px" }) => {
                 height={size}
                 alt="user"
                 // local 
-                src={`${allowOrigins.netlify}/assets/${image}`}
+                src={`${allowOrigins.render}/assets/${image}`}
             />
         </Box>
     );

@@ -11,7 +11,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     const token = useSelector((state) => state.token);
 
     const getPosts = async () => {
-        const response = await fetch(`${allowOrigins.netlify}/posts`, {
+        const response = await fetch(`${allowOrigins.render}/posts`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -21,7 +21,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
     const getUserPosts = async () => {
         const response = await fetch(
-            `${allowOrigins.netlify}/posts/${userId}/posts`,
+            `${allowOrigins.render}/posts/${userId}/posts`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },

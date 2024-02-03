@@ -47,7 +47,7 @@ const MyPostWidget = ({picturePath}) => {
             formData.append("picturePath",image.name)
         }
 
-        const response=await fetch(`${allowOrigins.netlify}/posts`,
+        const response=await fetch(`${allowOrigins.render}/posts`,
         {
             method :"POST",
             headers :{ Authorization: `Bearer ${token}`},
