@@ -11,6 +11,7 @@ import WidgetWrapper from "../../components/WidgetWrapper.jsx";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../state/index.js";
+import allowOrigins from "../../allowOrigins.js";
 
 const PostWidget = (
   {
@@ -39,7 +40,7 @@ const PostWidget = (
   const primary = palette.primary.main;
 
   const patchLikes = async () => {
-    const resopnse = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+    const resopnse = await fetch(`${allowOrigins.netlify}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -70,7 +71,7 @@ const PostWidget = (
           alt={"post"}
           height={"auto"}
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`${allowOrigins.netlify}/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt={"0.25rem"}>

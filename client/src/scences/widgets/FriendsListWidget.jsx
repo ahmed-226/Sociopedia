@@ -4,6 +4,7 @@ import WidgetWrapper from "../../components/WidgetWrapper"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setFriends } from "../../state"
+import allowOrigins from "../../allowOrigins"
 
 const FriendsListWidget = ({ userId }) => {
 
@@ -14,7 +15,7 @@ const FriendsListWidget = ({ userId }) => {
 
   const getFriends = async () => {
     const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
+      `${allowOrigins.netlify}/users/${userId}/friends`,
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` }

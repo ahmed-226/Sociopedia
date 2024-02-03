@@ -23,7 +23,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
 	const patchFriend = async () => {
 		const response = await fetch(
-			`${allowOrigins.local}/users/${_id}/${friendId}`,
+			// local 
+			`${allowOrigins.netlify}/users/${_id}/${friendId}`,
 			{
 				method: "PATCH",
 				headers: {

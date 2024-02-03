@@ -24,6 +24,7 @@ import WidgetWrapper from '../../components/WidgetWrapper'
 import { useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { setPosts } from '../../state'
+import allowOrigins from "../../allowOrigins";
 
 const MyPostWidget = ({picturePath}) => {
     const dispatch=useDispatch()
@@ -46,7 +47,7 @@ const MyPostWidget = ({picturePath}) => {
             formData.append("picturePath",image.name)
         }
 
-        const response=await fetch(`http://localhost:3001/posts`,
+        const response=await fetch(`${allowOrigins.netlify}/posts`,
         {
             method :"POST",
             headers :{ Authorization: `Bearer ${token}`},

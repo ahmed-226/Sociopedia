@@ -10,7 +10,8 @@ const UserImage = ({ image, size = "60px" }) => {
                 width={size}
                 height={size}
                 alt="user"
-                src={`${allowOrigins.local}/assets/${image}`}
+                // local 
+                src={`${allowOrigins.netlify}/assets/${image}`}
             />
         </Box>
     );
