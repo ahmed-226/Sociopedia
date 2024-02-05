@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server",
-    "npm build":"npm i"
+    "build":"npm i"
   },
   "keywords": [],
   "author": "",

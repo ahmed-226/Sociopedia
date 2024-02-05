@@ -10,7 +10,7 @@ const UserImage = ({ image, size = "60px" }) => {
                 width={size}
                 height={size}
                 alt="user"
-                // local 
+                // render 
                 src={`${allowOrigins.render}/assets/${image}`}
             />
         </Box>
