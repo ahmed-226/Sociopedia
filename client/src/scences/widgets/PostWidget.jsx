@@ -40,7 +40,7 @@ const PostWidget = (
   const primary = palette.primary.main;
 
   const patchLikes = async () => {
-    const resopnse = await fetch(`${allowOrigins.local}/posts/${postId}/like`, {
+    const resopnse = await fetch(`${allowOrigins.render}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const PostWidget = (
           alt={"post"}
           height={"auto"}
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`${allowOrigins.local}/assets/${picturePath}`}
+          src={`${allowOrigins.render}/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt={"0.25rem"}>

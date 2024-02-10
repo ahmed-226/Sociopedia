@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
   const getUser=async ()=> {
 
-    const resopnse=await fetch(`${allowOrigins.local}/users/${userId}`,
+    const resopnse=await fetch(`${allowOrigins.render}/users/${userId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

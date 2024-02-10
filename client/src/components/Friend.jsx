@@ -23,8 +23,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
 	const patchFriend = async () => {
 		const response = await fetch(
-			// local 
-			`${allowOrigins.local}/users/${_id}/${friendId}`,
+			// render 
+			`${allowOrigins.render}/users/${_id}/${friendId}`,
 			{
 				method: "PATCH",
 				headers: {
