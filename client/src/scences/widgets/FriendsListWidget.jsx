@@ -15,7 +15,7 @@ const FriendsListWidget = ({ userId }) => {
 
   const getFriends = async () => {
     const response = await fetch(
-      `${allowOrigins.render}/users/${userId}/friends`,
+      `${allowOrigins.local}/users/${userId}/friends`,
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` }

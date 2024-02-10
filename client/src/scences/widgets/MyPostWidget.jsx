@@ -47,7 +47,7 @@ const MyPostWidget = ({picturePath}) => {
             formData.append("picturePath",image.name)
         }
 
-        const response=await fetch(`${allowOrigins.render}/posts`,
+        const response=await fetch(`${allowOrigins.local}/posts`,
         {
             method :"POST",
             headers :{ Authorization: `Bearer ${token}`},
