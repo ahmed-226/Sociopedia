@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
+import allowOrigins from "./allowOrigins.js"
 
 function App() {
 
@@ -20,9 +21,9 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline/>
           <Routes>
-            <Route path="/" element={<LoginPage/>} />
-            <Route path="/home" element={isAuth? <HomePage/>: <Navigate to={"/"}/> } />
-            <Route path="/profile/:userId" element={isAuth ? <ProfilePage/> : <Navigate to={"/"}/>} />
+            <Route path={`${allowOrigins.render}/`} element={<LoginPage/>} />
+            <Route path={`${allowOrigins.render}/home`} element={isAuth? <HomePage/>: <Navigate to={`${allowOrigins.render}/`}/> } />
+            <Route path={`${allowOrigins.render}/profile/:userId`} element={isAuth ? <ProfilePage/> : <Navigate to={`${allowOrigins.render}/`}/>} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
