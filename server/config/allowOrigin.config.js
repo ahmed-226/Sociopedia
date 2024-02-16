@@ -1,5 +1,5 @@
 const allowedOrigins = [
-    'https://sociopedia-71et.onrender.com',
+    'https://sociopedia-client-ztmd.onrender.com',
     'http://localhost:3000'
 ]
 
