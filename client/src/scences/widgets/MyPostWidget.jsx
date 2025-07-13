@@ -39,25 +39,40 @@ const MyPostWidget = ({picturePath}) => {
     const  medium=palette.neutral.medium
 
     const handelPost=async()=>{
-        const formData=new FormData()
-        formData.append("userId",_id)
-        formData.append("description",post)
-        if(image){
-            formData.append("picture",image)
-            formData.append("picturePath",image.name)
-        }
+        try {
+            const formData=new FormData()
+            formData.append("userId",_id)
+            formData.append("description",post)
+            
+            if(image){
+                formData.append("picture",image) // Only append the file, not the name
+            }
 
-        const response=await fetch(`${allowOrigins.render}/posts`,
-        {
-            method :"POST",
-            headers :{ Authorization: `Bearer ${token}`},
-            body :formData    
-        })
-        const posts=await response.json()
-        dispatch(setPosts({posts}))
-        setImage(null)
-        setPost("")
+            const response=await fetch(`${allowOrigins}/posts`, // FIXED: removed .local
+            {
+                method :"POST",
+                headers :{ Authorization: `Bearer ${token}`},
+                body :formData    
+            })
+            
+            if (!response.ok) {
+                console.error('Failed to create post:', response.status);
+                alert('Failed to create post. Please try again.');
+                return;
+            }
+            
+            const posts=await response.json()
+            dispatch(setPosts({posts}))
+            setImage(null)
+            setPost("")
+            setIsImage(false) // Close the image upload area
+            
+        } catch (error) {
+            console.error('Error creating post:', error);
+            alert('Failed to create post. Please check your connection.');
+        }
     }
+    
   return (
     <WidgetWrapper>
         <FlexBetween gap={"1.5rem"}>
@@ -84,7 +99,14 @@ const MyPostWidget = ({picturePath}) => {
                 <Dropzone
                     acceptedFiles=".jpg, .png, .jpeg"
                     multiple={false}
-                    onDrop={(acceptedFiles)=> setImage(acceptedFiles[0])}
+                    maxSize={10 * 1024 * 1024} // 10MB limit
+                    onDrop={(acceptedFiles, rejectedFiles) => {
+                        if (rejectedFiles.length > 0) {
+                            alert(`File rejected: ${rejectedFiles[0].errors[0].message}`);
+                            return;
+                        }
+                        setImage(acceptedFiles[0]);
+                    }}
                 >
                     {({ getRootProps,getInputProps})=>(
                         <FlexBetween>
@@ -122,7 +144,7 @@ const MyPostWidget = ({picturePath}) => {
 
         <Divider sx={{ margin:"1.25rem 0"}}/>
 
-        <FlexBetween >
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
             <FlexBetween 
                 gap={'0.25rem'}
                 onClick={()=> setIsImage(!isImage)}
@@ -141,28 +163,6 @@ const MyPostWidget = ({picturePath}) => {
                     </Typography>
                 </FlexBetween>
 
-                {isNonMobileScreens ?(
-                    <>
-                        <FlexBetween gap={"0.25rem"}>
-                            <GifBoxOutlined sx={{color:mediumMain}}/>
-                            <Typography color={mediumMain} sx={{"&:hover":{cursor:"pointer"}}}>Clip</Typography>
-                        </FlexBetween>
-
-                        <FlexBetween gap={"0.25rem"}>
-                            <AttachFileOutlined sx={{color:mediumMain}}/>
-                            <Typography color={mediumMain}>Attachment</Typography>
-                        </FlexBetween>
-
-                        <FlexBetween gap={"0.25rem"}>
-                            <MicOutlined sx={{color:mediumMain}}/>
-                            <Typography color={mediumMain}>Audio</Typography>
-                        </FlexBetween>
-                    </>
-                ):(
-                    <FlexBetween gap={"0.25rem"}>
-                            <MoreHorizOutlined sx={{color:mediumMain}}/>
-                        </FlexBetween>
-                )}
 
                 <Button 
                     disabled={!post}
@@ -176,7 +176,7 @@ const MyPostWidget = ({picturePath}) => {
                 >
                     POST
                 </Button>
-        </FlexBetween>
+        </Box>
     </WidgetWrapper>
   )
 }

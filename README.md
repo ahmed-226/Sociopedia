@@ -1,50 +1,156 @@
-# Sociopedia Project
+# Sociopedia - Full-Stack Social Media Platform
 
-Welcome to the Sociopedia Project! This full-stack application leverages a modern technology stack to create a dynamic and engaging social media platform. By combining the power of Node.js, Express.js, React.js, Material-UI, Redux, MongoDB (with Mongoose), and various security features such as Bcrypt, Helmet, and JWT, this project aims to deliver a seamless and secure user experience.
+![Sociopedia Overview](assets/overview.jpg)
+
+Welcome to **Sociopedia**, a comprehensive full-stack social media platform that combines modern web technologies to deliver a seamless, secure, and engaging user experience. This project showcases advanced features including dynamic content management, real-time interactions, and a sophisticated advertisement system.
 
 ## Key Features
 
-- **User Authentication and Authorization:** Robust user authentication ensures that only authorized individuals can access the platform. JSON Web Tokens (JWT) play a crucial role in secure user identification.
+### Advanced User Management
+- **Secure Authentication & Authorization** with JWT tokens
+- **Editable User Profiles** with social media integration
+- **Dynamic Profile Updates** for location, occupation, and social links
+- **Friend Connection System** with real-time updates
 
-- **Post Management:** Users can create, edit, and delete their posts, fostering a dynamic environment for sharing thoughts, images, and experiences.
+### Dynamic Content System
+- **Post Creation & Management** with image upload support
+- **Real-time Like & Comment System** with interactive UI
+- **Feed Management** with chronological sorting
+- **Image Processing** with error handling and fallbacks
 
-- **User Profiles:** Enjoy a personalized experience with customizable user profiles, allowing individuals to express their identity within the community.
+### Advertisement Platform
+- **Dynamic Advertisement Rotation** with smooth transitions
+- **Click Tracking & Analytics** for advertisement performance
 
-- **Friendship Connections:** The platform supports friend requests and connections, facilitating the growth of social circles and fostering a sense of community.
+### Modern UI/UX
+- **Material-UI Design System** with dark/light mode support
+- **Responsive Design** optimized for all screen sizes
+- **Smooth Animations** and transitions throughout the app
+- **Interactive Components** with hover effects and feedback
 
-- **Real-time Updates:** Users are kept in the loop with real-time updates on posts and notifications, enhancing the overall user experience.
+## Application Screenshots
+
+### Light Mode Interface
+![Light Mode](assets/lightMode.jpg)
+*Clean and modern interface in light mode*
+
+### User Profile Management
+![Profile Page](assets/profile.jpg)
+*Comprehensive user profile with editable social links and friend management*
 
 ## Technologies Used
 
-### Backend Technologies
-
-- **Node.js and Express.js:** Building a robust and scalable backend server to handle data processing, user authentication, and API requests.
-
-- **MongoDB with Mongoose:** A NoSQL database for storing user profiles, posts, and other essential data.
-
-- **HTTP, CORS, and Helmet:** Ensuring secure communication between the client and server, with enhanced security features such as CORS and Helmet.
-
-- **Bcrypt:** Safeguarding user passwords through industry-standard encryption.
-
-- **JWT (JSON Web Tokens):** Providing a secure and efficient method for user authentication and authorization.
+### Backend Architecture
+- **Node.js & Express.js** - Scalable server architecture
+- **MongoDB with Mongoose** - NoSQL database with ODM
+- **JWT Authentication** - Secure token-based authentication
+- **Bcrypt** - Password encryption and security
+- **Multer** - File upload handling for images
+- **Helmet & CORS** - Enhanced security middleware
+- **Morgan** - HTTP request logging
 
 ### Frontend Technologies
+- **React.js** - Modern component-based UI framework
+- **Material-UI (MUI)** - Comprehensive design system
+- **Redux Toolkit** - Predictable state management
+- **Redux Persist** - State persistence across sessions
+- **React Router** - Client-side routing
+- **React Dropzone** - Drag-and-drop file uploads
 
-- **React.js:** Creating a dynamic and responsive user interface that offers a seamless experience.
+### Database Models
+- **User Model** - Profile management with social links
+- **Post Model** - Content creation with engagement tracking
+- **Advertisement Model** - Dynamic ad management with analytics
+- **Comment System** - Nested commenting functionality
 
-- **Material-UI:** Leveraging the Material Design framework for a visually appealing and intuitive user interface.
+## Advanced Features
 
-- **Redux and Redux Toolkit:** Managing the application's state in a predictable and efficient manner.
+### Advertisement System
+- **Real-time Ad Rotation** - Automatic content switching every 5 seconds
+- **Click Analytics** - Comprehensive tracking and reporting
+- **Dynamic Theming** - Ads adapt to content with custom colors
+- **Priority Management** - Smart ad ordering based on performance
+- **Budget & Cost Tracking** - Complete monetization system
 
-- **Redux Persist:** Ensuring a persistent state across sessions for an improved user experience.
+### Social Features
+- **Friend Management** - Add/remove friends with instant updates
+- **Social Media Integration** - Connect Twitter, LinkedIn profiles
+- **Profile Customization** - Edit personal information in real-time
+- **Activity Tracking** - Profile views and post impressions
 
-- **React Router:** Enabling smooth navigation within the application.
+### User Experience
+- **Theme Switching** - Seamless dark/light mode toggle
+- **Responsive Design** - Optimized for desktop, tablet, and mobile
+- **Loading States** - Smooth transitions and feedback
+- **Error Handling** - Graceful fallbacks and user notifications
 
-## Project Vision
 
-Our vision for this Sociopedia Project is to create a vibrant and secure online community where users can connect, share, and engage with content in a meaningful way. I believe that the combination of cutting-edge technologies and a user-centric design will contribute to a positive and enriching experience for our users.
+## Installation & Setup
 
-Feel free to explore the project and join us on this exciting journey of social interaction in the digital age!
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (local or cloud instance)
+- npm or yarn package manager
 
-# Future Enhancements
-Stay tuned for future versions of the Social Media Project! I plan to introduce additional features and improvements to further enhance your social media experience. Your feedback and suggestions are always welcome as I work towards making this platform even more dynamic and user-friendly. Join us on this exciting journey into the future of social interaction in the digital age!
+### Backend Setup
+```bash
+cd server
+npm install
+cp .env.example .env
+npm start
+```
+
+### Frontend Setup
+```bash
+cd client
+npm install
+npm start
+```
+
+### Environment Variables
+```env
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=3001
+MAX_FILE_SIZE=10485760
+```
+
+## API Endpoints
+
+### Authentication
+- `POST /auth/register` - User registration with profile picture
+- `POST /auth/login` - User authentication
+
+### User Management
+- `GET /users/:id` - Get user profile
+- `PATCH /users/:id` - Update user information
+- `GET /users/:id/friends` - Get user's friends list
+- `PATCH /users/:id/:friendId` - Add/remove friends
+
+### Posts & Content
+- `GET /posts` - Get all posts (feed)
+- `POST /posts` - Create new post with image
+- `GET /posts/:userId` - Get user's posts
+- `PATCH /posts/:id/like` - Like/unlike posts
+
+### Advertisement System
+- `GET /advertisements` - Get active advertisements
+- `POST /advertisements/:id/click` - Record ad clicks
+- `POST /advertisements` - Create new advertisement (admin)
+- `PATCH /advertisements/:id` - Update advertisement (admin)
+
+## Future Enhancements
+
+### Planned Features
+- **Real-time Messaging** - Direct messaging between users
+- **Story Feature** - Temporary content sharing
+- **Advanced Analytics** - Detailed user engagement metrics
+- **Push Notifications** - Real-time alerts and updates
+- **Content Moderation** - AI-powered content filtering
+- **Mobile App** - React Native implementation
+- **Video Support** - Video upload and streaming
+- **Group Management** - Create and manage user groups
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

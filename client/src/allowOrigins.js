@@ -1,6 +1,8 @@
-const allowOrigins={
-    "local" : "http://localhost:3001",
-    "render" :"https://sociopedia-djft.onrender.com",
+const allowOrigins = {
+    "local": "http://localhost:3001",
+    "render": "https://sociopedia-djft.onrender.com",
+    "development": "http://localhost:3001"
 }
 
-export default allowOrigins
+// Export the local URL directly for consistency
+export default allowOrigins.local;

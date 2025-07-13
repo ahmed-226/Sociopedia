@@ -18,14 +18,21 @@ import FlexBetween from "../../components/FlexBetween.jsx"
 import allowOrigins from '../../allowOrigins.js'
 
 
-const registerSchema =yup.object().shape({
-    firstName:  yup.string().required('required'),
-    lastName:   yup.string().required('required'),
-    email:      yup.string().email('invalid email').required('required'),
-    password :  yup.string().required('required'),
-    location:   yup.string().required('required'),
+const registerSchema = yup.object().shape({
+    firstName: yup.string().required('required'),
+    lastName: yup.string().required('required'),
+    email: yup.string().email('invalid email').required('required'),
+    password: yup.string().required('required'),
+    location: yup.string().required('required'),
     occupation: yup.string().required('required'),
-    picture :   yup.string().required('required')
+    picture: yup.mixed()
+        .required('Picture is required')
+        .test('fileSize', 'File size must be less than 10MB', (value) => {
+            return value && value.size <= 10 * 1024 * 1024; // 10MB
+        })
+        .test('fileType', 'Only image files are allowed', (value) => {
+            return value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+        })
 })
 
 const loginSchema = yup.object().shape({
@@ -58,44 +65,71 @@ const Form =()=>{
     const isRegister =pageType==='register'
 
     const register = async (values, onSubmitProps) => {
-    // this allows us to send form info with image
-        const formData = new FormData();
-        for (let value in values) {
-            formData.append(value, values[value]);
-        }
-        formData.append("picturePath", values.picture.name);
-
-        const savedUserResponse = await fetch(
-            `${allowOrigins.render}/auth/register`,
-            {
-                method: "POST",
-                body: formData,
+        try {
+            // this allows us to send form info with image
+            const formData = new FormData();
+            for (let value in values) {
+                formData.append(value, values[value]);
             }
-        );
-        const savedUser = await savedUserResponse.json();
-        onSubmitProps.resetForm();
+            formData.append("picturePath", values.picture.name);
 
-        if (savedUser) {
-            setPageType("login");
+            const savedUserResponse = await fetch(
+                `${allowOrigins}/auth/register`, // FIXED: Use allowOrigins instead of hardcoded URL
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+            
+            if (!savedUserResponse.ok) {
+                const errorData = await savedUserResponse.text();
+                console.error('Registration failed:', errorData);
+                alert('Registration failed. Please try again.');
+                return;
+            }
+            
+            const savedUser = await savedUserResponse.json();
+            onSubmitProps.resetForm();
+
+            if (savedUser) {
+                setPageType("login");
+                alert('Registration successful! Please login.');
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert('Registration failed. Please check your connection and try again.');
         }
     };
-    
+
     const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(`${allowOrigins.render}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-        dispatch(
-            setLogin({
-                user: loggedIn.user,
-                token: loggedIn.token,
-            })
-        );
-        navigate("/home");
+        try {
+            const loggedInResponse = await fetch(`${allowOrigins}/auth/login`, { // FIXED: Use allowOrigins instead of hardcoded URL
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify(values),
+            });
+            
+            if (!loggedInResponse.ok) {
+                const errorData = await loggedInResponse.json();
+                console.error('Login failed:', errorData);
+                alert('Login failed. Please check your credentials.');
+                return;
+            }
+            
+            const loggedIn = await loggedInResponse.json();
+            onSubmitProps.resetForm();
+            if (loggedIn) {
+                dispatch(
+                    setLogin({
+                        user: loggedIn.user,
+                        token: loggedIn.token,
+                    })
+                );
+                navigate("/home");
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('Login failed. Please check your connection and try again.');
         }
     };
     
@@ -191,7 +225,14 @@ const Form =()=>{
                                         <Dropzone
                                             acceptedFiles=".jpg, .png, .jpeg"
                                             multiple={false}
-                                            onDrop={(acceptedFiles)=> setFieldValue("picture",acceptedFiles[0])}
+                                            maxSize={10 * 1024 * 1024} // 10MB limit
+                                            onDrop={(acceptedFiles, rejectedFiles) => {
+                                                if (rejectedFiles.length > 0) {
+                                                    alert(`File rejected: ${rejectedFiles[0].errors[0].message}`);
+                                                    return;
+                                                }
+                                                setFieldValue("picture", acceptedFiles[0]);
+                                            }}
                                         >
                                             {({ getRootProps,getInputProps})=>(
                                                 <Box

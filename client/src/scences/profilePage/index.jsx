@@ -18,17 +18,14 @@ const ProfilePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)")
 
   const getUser=async ()=> {
-
-    const resopnse=await fetch(`${allowOrigins.render}/users/${userId}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const resopnse=await fetch(`${allowOrigins}/users/${userId}`, // FIXED: removed .local
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        })
       const data=await resopnse.json()
       setUser(data)
-
   }
-
   useEffect(()=>{
     getUser()
   },[])

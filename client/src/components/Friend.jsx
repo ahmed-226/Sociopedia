@@ -21,10 +21,10 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
 	const isFriend = friends.find((friend) => friend._id === friendId);
 
+	
 	const patchFriend = async () => {
 		const response = await fetch(
-			// render 
-			`${allowOrigins.render}/users/${_id}/${friendId}`,
+			`${allowOrigins}/users/${_id}/${friendId}`, // FIXED: removed .local
 			{
 				method: "PATCH",
 				headers: {
@@ -36,6 +36,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 		const data = await response.json();
 		dispatch(setFriends({ friends: data }));
 	};
+
 	return (
 		<FlexBetween>
 			<FlexBetween gap={"1rem"}>
