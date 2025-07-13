@@ -3,8 +3,12 @@ import User from "../models/User.js";
 
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
+    const { userId, description } = req.body;
     const user = await User.findById(userId);
+    
+    // Get the actual filename from multer, not from req.body
+    const picturePath = req.file ? req.file.filename : null;
+    
     const newPost = new Post({
       userId,
       firstName: user.firstName,
@@ -12,15 +16,16 @@ export const createPost = async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath,
+      picturePath, // Use the filename from multer
       likes: {},
       comments: [],
     });
 
     await newPost.save();
-    const post = await Post.find();
-    res.status(201).json(post);
+    const posts = await Post.find().sort({ createdAt: -1 }); // Sort by newest first
+    res.status(201).json(posts);
   } catch (e) {
+    console.error('Create post error:', e);
     res.status(409).json({ status: "ERROR", message: e.message });
   }
 };
